@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.App {
+  height: 100vh;
+  width: 100vw;
+
+}
+
+.box{
+height: 100vh;
+width: 100%;
+background-color: pink;
+display: flex;
+align-items:center ;
+justify-content: center;
+
+}
+h1{
+  font-size:60px;
+  color: black;
+}
