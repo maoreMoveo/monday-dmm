@@ -1,17 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllItems, getAllMemberFromBoard } from "./actions/board.action";
-import { NullLiteral } from "@babel/types";
+import { getItemsAndMembers } from "./actions/board.action";
 
 interface initialStateI {
   boards: [] | null;
-  items: [] | null;
-  boardMembers:[] | null|{};
+  userItems: [] | null;
+  boardMembers: [] | null;
 }
 
 const initialState: initialStateI = {
   boards: null,
-  items: null,
-  boardMembers:null
+  userItems: null,
+  boardMembers: null,
 };
 
 const boardSlice = createSlice({
@@ -19,15 +18,10 @@ const boardSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getAllItems.fulfilled, (state, action) => {
-      console.log(action.payload);
-      state.items = action.payload;
+    builder.addCase(getItemsAndMembers.fulfilled, (state, action) => {
+      state.userItems = action.payload.itemsByUser;
+      state.boardMembers = action.payload.allMembers;
     });
-    builder.addCase(getAllMemberFromBoard.fulfilled, (state, action) => {
-      console.log(action.payload);
-      state.boardMembers = action.payload;
-    });
-   
   },
 });
 
