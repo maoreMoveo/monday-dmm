@@ -1,19 +1,35 @@
 import React from "react";
-import "./App.css";
+import "./assets/styles/styles.scss";
 import mondaySdk from "monday-sdk-js";
 const monday = mondaySdk();
 
-class AppSolution extends React.Component {
-  constructor(props) {
+interface IAppSolutionProps {}
+
+interface IAppSolutionState {
+  settings: {
+    text?: string;
+    background?: string;
+  };
+  context: any;
+  name: string;
+  board: any;
+}
+
+class AppSolution extends React.Component<
+  IAppSolutionProps,
+  IAppSolutionState
+> {
+  constructor(props: IAppSolutionProps) {
     super(props);
 
     // Default state
     this.state = {
       settings: {
-        text:"בהצלחה לכולם תנו בראש!"
+        text: "בהצלחה לכולם תנו בראש!",
       },
       context: {},
       name: "",
+      board: {},
     };
   }
 
@@ -23,8 +39,10 @@ class AppSolution extends React.Component {
       this.setState({ settings: res.data });
     });
 
-    monday.api(`query { me { name } }`).then((res) => {
-      this.setState({ name: res.data.me.name });
+    monday.api(`query { me { name } }`).then((res: any) => {
+      if (res.data && res.data.me) {
+        this.setState({ name: res.data.me.name });
+      }
     });
   }
 
