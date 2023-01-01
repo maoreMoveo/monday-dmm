@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import "./assets/styles/styles.scss";
 import mondaySdk from "monday-sdk-js";
 import "monday-ui-react-core/dist/main.css";
-import AppSolution from "./AppSolution";
-import { boardService } from "./services/board.service";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllItems,
@@ -17,7 +15,7 @@ const App = () => {
   const [context, setContext] = useState();
   const board = useSelector((state) => state.board);
   const dispatch = useDispatch();
-  let boardByUser=null
+  let boardByUser = null;
   useEffect(() => {
     monday.execute("valueCreatedForUser");
     // monday.get("context").then((res) => {});
@@ -29,7 +27,6 @@ const App = () => {
   useEffect(() => {
     if (context) {
       const { boardId } = context;
-      //const board = await boardService.fetchBoard(boardId);
       if (!board.boardMembers && !board.items) {
         dispatch(getAllItems(boardId));
         dispatch(getAllMemberFromBoard(boardId));
@@ -37,55 +34,50 @@ const App = () => {
     }
   }, [dispatch, context, board]);
 
-  // console.log(context);
-  // console.log(board.boardMembers)
-  // console.log(board.items)
-
-  const calcWeekndDay = (maxDay, month, year) => {
-    const arr =  new Array(maxDay).fill(null);
-    // console.log(`${month}, ${31}, ${year}`);
+  const workingDatesWithWeekend = (maxDay, month, year) => {
+    const arr = new Array(maxDay).fill(null);
     for (let i = 0; i < arr.length; i++) {
       const weekDay = new Date(`${month}, ${i}, ${year}`).getDay();
       if (weekDay === 5 || weekDay === 6) {
+        // change to as const index array
         arr[i] = "weekend";
       }
     }
     return arr;
   };
-  const filterdata = () => {
+  const filterDataByUserItems = () => {
     const date = new Date();
     const maxDayInMonthToCheck = date.getDate();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
     const sortItem = _.sortBy(board.items, ["person", "date4"]);
-    const arrWeekandMonth = calcWeekndDay(
+    const arrWeekandMonth = workingDatesWithWeekend(
       maxDayInMonthToCheck,
-      date.getMonth() + 1,
-      date.getFullYear()
+      month,
+      year
     );
-    console.log("new array with weekend");
-    console.log(arrWeekandMonth);
     const boardByUser = board.boardMembers.map((member) => {
-      // const arr= new Array([...arrWeekandMonth]);
       const allUserItems = _.filter(sortItem, { person: member.name });
-      let arr=[...arrWeekandMonth];
+      let userItemTemp = [...arrWeekandMonth];
       allUserItems.map((userItem) => {
         const itemDate = {
           day: +userItem.date4.slice(8),
           month: +userItem.date4.slice(5, 7),
           year: +userItem.date4.slice(0, 4),
         };
-        //add only if it now past date
+        //add only if date did not past through the requirement
         if (
           itemDate.day <= date.getDate() &&
-          itemDate.month <= date.getMonth() + 1 &&
-          itemDate.year <= date.getFullYear()
+          itemDate.month <= month &&
+          itemDate.year <= year
         ) {
-          arr[+itemDate.day-1] = userItem;
+          userItemTemp[+itemDate.day - 1] = userItem;
         }
       });
       return {
         _id: member.id,
         person: member.name,
-        userItems: arr,
+        userItems: userItemTemp,
       };
     });
     console.log("board by user");
@@ -94,19 +86,22 @@ const App = () => {
   };
 
   if (board && board.items && board.boardMembers) {
-    boardByUser= filterdata();
-    
+    boardByUser = filterDataByUserItems();
   }
   return (
     <div className="App">
       <div className="box">
-        {boardByUser && boardByUser.map((item)=>
-        <div>
-           <h1> user name:{item.person}</h1>
-           <h1>total items:{item.userItems.length}</h1>
-           <h1>total missed item:{item.userItems.filter((item)=> !item ).length}</h1>
-           </div>
-        )}
+        {boardByUser &&
+          boardByUser.map((item) => (
+            <div>
+              <h1> user name:{item.person}</h1>
+              <h1>total items:{item.userItems.length}</h1>
+              <h1>
+                total missed item:
+                {item.userItems.filter((item) => !item).length}
+              </h1>
+            </div>
+          ))}
       </div>
     </div>
   );
