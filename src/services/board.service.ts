@@ -76,7 +76,7 @@ export const filterDataByUserItems = (allItems: any, allMembers: any) => {
   const boardByUser = allMembers.map((member: any) => {
     const allUserItems = _.filter(sortItem, { person: member.name });
     let userItemTemp = [...arrWeekandMonth];
-    allUserItems.map((userItem) => {
+    allUserItems.map((userItem:any) => {
       const itemDate = {
         day: +userItem.date4.slice(8),
         month: +userItem.date4.slice(5, 7),
