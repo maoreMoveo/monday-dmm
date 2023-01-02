@@ -12,7 +12,7 @@ const Hourly = () => {
 console.log('board')
 console.log(board)
 
-if( !board) return <h1>loading</h1>
+if( !board.board) return <h1>loading</h1>
   return (
     <div className="main-container">
       <nav>
@@ -22,7 +22,7 @@ if( !board) return <h1>loading</h1>
         <div className="controls">
           <Button
             onClick={() =>
-              boardService.sendNotification("37057233", board.board.boardId, "ani pantera")
+              boardService.sendNotification("", board.board.boardId, "ani pantera  ani era vcolam yeshenim")
             }
           >
             Set Auto R
