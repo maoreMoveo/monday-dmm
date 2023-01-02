@@ -20,9 +20,9 @@ const App = () => {
   useEffect(() => {
     monday.execute("valueCreatedForUser");
     monday.listen("context", (res) => {
-      console.log("listen");
       setContext(res.data);
     });
+    //check with sss
     monday.listen("filter", (res) => {
       console.log('filter data');
       console.log(res );
@@ -47,7 +47,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (context) {
+    if (context ) {
       const { boardId } = context;
       if (!board.boardMembers && !board.items) {
         (async () => {
@@ -57,8 +57,10 @@ const App = () => {
     }
   }, [dispatch, context, board]);
 
-  console.log(board.items);
-  console.log(board.boardMembers);
+    if(board.boardMembers){
+      console.log('boarddddddd member')
+        console.log(_.find(board.boardMembers,{'name':"Guy Rubinstein"}));
+    }
   return (
     <div className="App">
       <Hourly />

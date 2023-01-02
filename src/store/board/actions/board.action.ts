@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { boardService } from "../../../services/board.service";
+
 export const getBoardData = async (id: string) => {
   const res: any = await boardService.fetchBoard(id);
   const allItems = res.boards[0].items.map((item: any) => {

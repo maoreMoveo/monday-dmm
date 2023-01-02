@@ -1,17 +1,24 @@
+import React from "react";
 import mondaySdk from "monday-sdk-js";
 import _ from "lodash";
-import { text } from "stream/consumers";
 const monday = mondaySdk();
 
 const fetchBoard = async (id: string) => {
+  const settings= await monday.get('settings');
+  console.log('setttttings')
+  console.log(settings)
+const arrSettings=[
+  Object.keys(settings.data.actualHours)[0],Object.keys(settings.data.date)[0],'person','status']
+  console.log('setttttings array')
+  console.log(arrSettings)
   const query = `query {  
-    boards(ids:${id}) {
+    boards(ids: ${id}) {
       id
       name
       items {
         id
         name
-        column_values (ids: [date4, project_name,actual_hours,status,person,team_member7]) {
+        column_values (ids: [${arrSettings}]) {
           id
            text
            # value
@@ -32,9 +39,9 @@ const fetchBoard = async (id: string) => {
 };
 const fetchMembersOfBoard = async (id: string) => {
   const query: string = `query {  
-    boards(ids:${id}) {
+    boards(ids: ${id}) {
       id
-      subscribers {
+      subscribers{
         id
         name
       }
