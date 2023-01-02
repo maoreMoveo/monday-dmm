@@ -12,6 +12,7 @@ const monday = mondaySdk();
 const App = () => {
   const [context, setContext] = useState();
   const board = useSelector((state) => state.board);
+  
   const dispatch = useDispatch();
   console.log("context:  ");
   console.log(context);

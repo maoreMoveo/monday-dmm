@@ -14,7 +14,7 @@ export const getBoardData = async (id: string) => {
     };
     return itemObj;
   });
-  return {boardId: res.board[0].id, allItems: allItems, boardName:res.board[0].name };
+  return {boardId: res.boards[0].id, allItems: allItems, boardName:res.boards[0].name };
 };
 export const getAllMemberFromBoard = async (id: string) => {
   const res: any = await boardService.fetchMembersOfBoard(id);

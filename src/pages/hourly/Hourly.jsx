@@ -8,17 +8,21 @@ import { boardService } from "../../services/board.service";
 
 const Hourly = () => {
   const board = useSelector((state) => state.board);
-const boardId='3720367995'
+
+console.log('board')
+console.log(board)
+
+if( !board) return <h1>loading</h1>
   return (
     <div className="main-container">
       <nav>
         <div className="title">
-          <h1>Hourly</h1>
+          <h1>{board.board.boardName}</h1>
         </div>
         <div className="controls">
           <Button
             onClick={() =>
-              boardService.sendNotification("36477249", boardId, "ani pantera")
+              boardService.sendNotification("37057233", board.board.boardId, "ani pantera")
             }
           >
             Set Auto R
