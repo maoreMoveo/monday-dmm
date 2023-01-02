@@ -1,11 +1,13 @@
 import mondaySdk from "monday-sdk-js";
 import _ from "lodash";
+import { text } from "stream/consumers";
 const monday = mondaySdk();
 
 const fetchBoard = async (id: string) => {
   const query = `query {  
     boards(ids:${id}) {
       id
+      name
       items {
         id
         name
@@ -45,7 +47,20 @@ const fetchMembersOfBoard = async (id: string) => {
     console.log(error);
   }
 };
-
+const sendNotification = async (
+  userId: string,
+  boardId: string,
+  textMessage: string
+) => {
+  let query = `mutation { create_notification (user_id:${userId} , target_id: ${boardId}, text: \"${textMessage}\", target_type: Project) { text } }`;
+   try{
+    await monday.api(query);
+   }catch(err){
+    console.log(err)
+   }
+  console.log('send message')
+ 
+};
 const _workingDatesWithWeekend = (
   maxDay: number,
   month: number,
@@ -62,7 +77,7 @@ const _workingDatesWithWeekend = (
   return arr;
 };
 
-export const filterDataByUserItems = (allItems: any, allMembers: any) => {
+export const mapDataByUserItems = (allItems: any, allMembers: any) => {
   const date = new Date();
   const maxDayInMonthToCheck = date.getDate();
   const year = date.getFullYear();
@@ -76,7 +91,7 @@ export const filterDataByUserItems = (allItems: any, allMembers: any) => {
   const boardByUser = allMembers.map((member: any) => {
     const allUserItems = _.filter(sortItem, { person: member.name });
     let userItemTemp = [...arrWeekandMonth];
-    allUserItems.map((userItem:any) => {
+    allUserItems.map((userItem: any) => {
       const itemDate = {
         day: +userItem.date4.slice(8),
         month: +userItem.date4.slice(5, 7),
@@ -110,5 +125,6 @@ export const filterDataByUserItems = (allItems: any, allMembers: any) => {
 export const boardService = {
   fetchBoard,
   fetchMembersOfBoard,
-  filterDataByUserItems,
+  mapDataByUserItems,
+  sendNotification,
 };

@@ -23,24 +23,7 @@ const App = () => {
       setContext(res.data);
     });
   }, []);
-  const send = () => {
-    let query =
-      'mutation { create_notification (user_id: 37057233, target_id: 3720367995, text: "This is a reminder to fill out the actual hours!", target_type: Project) { text } }';
-
-    fetch("https://api.monday.com/v2", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjIxNDE5NTAzNSwidWlkIjozNzA1NzMxOCwiaWFkIjoiMjAyMi0xMi0yOFQxMDoxOTo0OS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTEwMjMyOCwicmduIjoidXNlMSJ9.1Oib9J6fdJD8vcN93Nfv-Uu2Vsd-5BDiqpJTGjZLOho",
-      },
-      body: JSON.stringify({
-        query: query,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => console.log(JSON.stringify(res, null, 2)));
-  };
+ 
 
   useEffect(() => {
     if (context) {
