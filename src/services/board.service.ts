@@ -116,7 +116,7 @@ export const mapDataByUserItems = (allItems: any, allMembers: any) => {
     return {
       _id: member.id,
       person: member.name,
-      userItems: userItemTemp,
+      allUserItems: userItemTemp,
     };
   });
   return boardByUser;

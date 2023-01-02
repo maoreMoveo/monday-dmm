@@ -34,10 +34,10 @@ if( !board.board) return <h1>loading</h1>
           board.userItems.map((item) => (
             <div>
               <h1> user name:{item.person}</h1>
-              <h1>total items:{item.userItems.length}</h1>
+              <h1>total items:{item.allUserItems.length}</h1>
               <h1>
                 total missed item:
-                {item.userItems.filter((item) => !item).length}
+                {item.allUserItems.filter((item) => !item).length}
               </h1>
             </div>
           ))}
