@@ -1,10 +1,10 @@
+// @ts-ignore
 import mondaySdk from "monday-sdk-js";
 import _ from "lodash";
-import { text } from "stream/consumers";
 const monday = mondaySdk();
 
 const fetchBoard = async (id: string) => {
-  const query = `query {  
+  const query = `query {
     boards(ids:${id}) {
       id
       name
@@ -17,8 +17,8 @@ const fetchBoard = async (id: string) => {
            # value
         }
       }
-    
-    } 
+
+    }
     }`;
   try {
     const res = await monday.api(query);
@@ -30,6 +30,49 @@ const fetchBoard = async (id: string) => {
     console.log(error);
   }
 };
+// const fetchBoard = async (id: string) => {
+//   const settings = await monday.get("settings");
+
+//   console.log("setttttings");
+//   console.log(settings);
+//   const arrSettings = [
+//     Object.keys(settings.data.actualHours)[0],
+//     Object.keys(settings.data.date)[0],
+//     "person",
+//     "status",
+//   ];
+//   console.log("setttttings array");
+//   console.log(arrSettings);
+//   const query = `query($columnId: String) {
+//     boards(ids:${id}) {
+//       id
+//       name
+//       items {
+//         id
+//         name
+//         column_values (ids: $columnId) {
+//           id
+//            text
+//            # value
+//         }
+//       }
+
+//     }
+//     }`;
+//   try {
+//     const variables = {
+//       columnId: "date4",
+//     };
+//     const res = await monday.api(query, { variables });
+//     console.log(" all board data");
+//     console.log(res.data);
+
+//     return res.data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
 const fetchMembersOfBoard = async (id: string) => {
   const query: string = `query {  
     boards(ids:${id}) {
@@ -53,15 +96,14 @@ const sendNotification = async (
   textMessage: string
 ) => {
   let query = `mutation { create_notification (user_id:${userId} , target_id: ${boardId}, text: \"${textMessage}\", target_type: Project) { text } }`;
-   try{
+  try {
     await monday.api(query);
-   }catch(err){
-    console.log(err)
-   }
-  console.log('send message')
- 
+  } catch (err) {
+    console.log(err);
+  }
+  console.log("send message");
 };
-const _workingDatesWithWeekend = (
+const workingDatesWithWeekend = (
   maxDay: number,
   month: number,
   year: number
@@ -69,8 +111,8 @@ const _workingDatesWithWeekend = (
   const arr = new Array(maxDay).fill(null);
   for (let i = 0; i < arr.length; i++) {
     const weekDay = new Date(`${month}, ${i}, ${year}`).getDay();
+
     if (weekDay === 5 || weekDay === 6) {
-      // change to as const index array
       arr[i] = "weekend";
     }
   }
@@ -83,7 +125,7 @@ export const mapDataByUserItems = (allItems: any, allMembers: any) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const sortItem = _.sortBy(allItems, ["person", "date4"]);
-  const arrWeekandMonth = _workingDatesWithWeekend(
+  const arrWeekandMonth = workingDatesWithWeekend(
     maxDayInMonthToCheck,
     month,
     year
@@ -97,11 +139,10 @@ export const mapDataByUserItems = (allItems: any, allMembers: any) => {
         month: +userItem.date4.slice(5, 7),
         year: +userItem.date4.slice(0, 4),
       };
-      //add only if date did not past through the requirement
       if (
         itemDate.day <= date.getDate() &&
-        itemDate.month <= month &&
-        itemDate.year <= year
+        itemDate.month === month &&
+        itemDate.year === year
       ) {
         if (userItemTemp[+itemDate.day - 1]) {
           userItemTemp[+itemDate.day - 1] = [
@@ -122,9 +163,32 @@ export const mapDataByUserItems = (allItems: any, allMembers: any) => {
   return boardByUser;
 };
 
+const getUserIdsOfMissingItems = (users: any) => {
+  const ids = [];
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    for (let j = 0; j < user.userItems.length; j++) {
+      const item = user.userItems[j];
+      if (!item) {
+        ids.push(user._id);
+        continue;
+      }
+      for (let k = 0; k < item.length; k++) {
+        const slot = item[k];
+        if (!slot.actual_hours || slot.actual_hours === "0") {
+          ids.push(user._id);
+        }
+      }
+    }
+  }
+  return [...new Set(ids)];
+};
+
 export const boardService = {
   fetchBoard,
   fetchMembersOfBoard,
   mapDataByUserItems,
   sendNotification,
+  workingDatesWithWeekend,
+  getUserIdsOfMissingItems,
 };

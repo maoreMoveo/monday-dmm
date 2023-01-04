@@ -2,15 +2,19 @@
   width: 236px;
   height: 128px;
   border: 1px solid #c5c7d0;
+  border-top: none;
   display: flex;
   flex-direction: column;
   padding-left: 24px;
+  gap: 8px;
 }
 
 h2 {
+  font-weight: 700;
   font-size: 18px;
   line-height: 26px;
   letter-spacing: -0.5px;
+  text-transform: capitalize;
   color: #323338;
   padding-top: 16px;
 }
@@ -26,4 +30,8 @@ p {
 
 .total-missing-logs {
   color: #d83a52;
+}
+
+.valid-member {
+  color: #258750;
 }

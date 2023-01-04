@@ -17,3 +17,16 @@ body {
   padding: 0 20px;
   // border-radius: 1rem;
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  max-height: 650px;
+  width: 100vw;
+  max-width: 1070px;
+  border-radius: 1rem;
+  margin-top: 20px;
+  background-color: #fff;
+}

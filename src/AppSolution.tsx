@@ -1,5 +1,6 @@
 import React from "react";
 import "./assets/styles/styles.scss";
+// @ts-ignore
 import mondaySdk from "monday-sdk-js";
 const monday = mondaySdk();
 
@@ -35,7 +36,7 @@ class AppSolution extends React.Component<
 
   componentDidMount() {
     // TODO: set up event listeners
-    monday.listen("settings", (res) => {
+    monday.listen("settings", (res: any) => {
       this.setState({ settings: res.data });
     });
 
