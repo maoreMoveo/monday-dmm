@@ -1,0 +1,21 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .card {
+    &:nth-child(2) {
+      border-left: none;
+    }
+    &:last-child {
+      border-right: 1px solid #c5c7d0;
+    }
+  }
+}
+
+.day {
+  width: 120px;
+  height: 72px;
+  background-color: #ccc;
+  border: 1px solid black;
+}
