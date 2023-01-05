@@ -25,56 +25,11 @@ const fetchBoard = async (id: string) => {
     }`;
   try {
     const res = await monday.api(query);
-    console.log(" all board data");
-    console.log(res.data);
-
     return res.data;
   } catch (error) {
-    console.log(error);
+    return console.log(error)
   }
 };
-// const fetchBoard = async (id: string) => {
-//   const settings = await monday.get("settings");
-
-//   console.log("setttttings");
-//   console.log(settings);
-//   const arrSettings = [
-//     Object.keys(settings.data.actualHours)[0],
-//     Object.keys(settings.data.date)[0],
-//     "person",
-//     "status",
-//   ];
-//   console.log("setttttings array");
-//   console.log(arrSettings);
-//   const query = `query(arrSettings) {
-//     boards(ids:${id}) {
-//       id
-//       name
-//       items {
-//         id
-//         name
-//         column_values (ids: $columnId) {
-//           id
-//            text
-//            # value
-//         }
-//       }
-
-//     }
-//     }`;
-//   try {
-//     // const variables = {
-//     //   columnId: "date4",
-//     // };
-//     const res = await monday.api(query);
-//     console.log(" all board data");
-//     console.log(res.data);
-
-//     return res.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 const fetchMembersOfBoard = async (id: string) => {
   const query: string = `query {  

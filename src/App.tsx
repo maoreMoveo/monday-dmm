@@ -15,8 +15,6 @@ const App = () => {
   const [context, setContext] = useState();
   const board = useSelector((state:RootStore) => state.board);
   const dispatch = useDispatch<AppDispatch>();
-  console.log("context:  ");
-  console.log(context);
 
   useEffect(() => {
     monday.execute("valueCreatedForUser");
