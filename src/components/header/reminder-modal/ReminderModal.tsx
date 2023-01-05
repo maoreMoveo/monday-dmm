@@ -13,14 +13,17 @@ import { User } from "../../../types/user";
 import ModalMain from "./ModalMain";
 import ModalSuccess from "./ModalSuccess";
 import ModalControls from "./ModalControls";
+
 interface IPropsReminder {
   handleToggleModal: () => void;
 }
+
 const ReminderModal = ({ handleToggleModal }: IPropsReminder) => {
   const board = useSelector((state: RootStore) => state.board);
   const [selectSendTo, setSelectSendTo] = useState("incomplete");
   const [finishedSending, setFinishedSending] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setSelectSendTo(value);
@@ -28,12 +31,16 @@ const ReminderModal = ({ handleToggleModal }: IPropsReminder) => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    if (selectSendTo === "incomplete") {
-      await sendMessegeToUserWithIncompleteItems();
-    } else {
-      await sendMessegeToAllUserBoard();
+    try{
+      if (selectSendTo === "incomplete") {
+        await sendMessegeToUserWithIncompleteItems();
+      } else {
+        await sendMessegeToAllUserBoard();
+      }
+      setFinishedSending(true);
+    }catch(err){
+      console.log(err);
     }
-    setFinishedSending(true);
   };
 
   const sendMessegeToAllUserBoard = async () => {
@@ -51,7 +58,7 @@ const ReminderModal = ({ handleToggleModal }: IPropsReminder) => {
         );
       })
     );
-    if (res) console.log("all messege  to everybody send");
+    if (res) console.log("all messege to everybody send");
   };
 
   const sendMessegeToUserWithIncompleteItems = async () => {
