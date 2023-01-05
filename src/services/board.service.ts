@@ -1,6 +1,9 @@
 // @ts-ignore
 import mondaySdk from "monday-sdk-js";
 import _ from "lodash";
+import { Member } from "../types/member";
+import { User } from "../types/user";
+import { UserItem } from "../types/userItem";
 const monday = mondaySdk();
 
 const fetchBoard = async (id: string) => {
@@ -43,7 +46,7 @@ const fetchBoard = async (id: string) => {
 //   ];
 //   console.log("setttttings array");
 //   console.log(arrSettings);
-//   const query = `query($columnId: String) {
+//   const query = `query(arrSettings) {
 //     boards(ids:${id}) {
 //       id
 //       name
@@ -60,10 +63,10 @@ const fetchBoard = async (id: string) => {
 //     }
 //     }`;
 //   try {
-//     const variables = {
-//       columnId: "date4",
-//     };
-//     const res = await monday.api(query, { variables });
+//     // const variables = {
+//     //   columnId: "date4",
+//     // };
+//     const res = await monday.api(query);
 //     console.log(" all board data");
 //     console.log(res.data);
 
@@ -92,7 +95,7 @@ const fetchMembersOfBoard = async (id: string) => {
 };
 const sendNotification = async (
   userId: string,
-  boardId: string,
+  boardId: number,
   textMessage: string
 ) => {
   let query = `mutation { create_notification (user_id:${userId} , target_id: ${boardId}, text: \"${textMessage}\", target_type: Project) { text } }`;
@@ -120,20 +123,22 @@ const workingDatesWithWeekend = (
 };
 
 export const mapDataByUserItems = (allItems: any, allMembers: any) => {
-  const date = new Date();
-  const maxDayInMonthToCheck = date.getDate();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
+  const date: Date = new Date();
+  const maxDayInMonthToCheck: number = date.getDate();
+  const year: number = date.getFullYear();
+  const month: number = date.getMonth() + 1;
   const sortItem = _.sortBy(allItems, ["person", "date4"]);
   const arrWeekandMonth = workingDatesWithWeekend(
     maxDayInMonthToCheck,
     month,
     year
   );
-  const boardByUser = allMembers.map((member: any) => {
-    const allUserItems = _.filter(sortItem, { person: member.name });
+  const boardByUser: User[] = allMembers.map((member: Member) => {
+    const allUserItems: UserItem[] = _.filter(sortItem, {
+      person: member.name,
+    });
     let userItemTemp = [...arrWeekandMonth];
-    allUserItems.map((userItem: any) => {
+    allUserItems.map((userItem: UserItem) => {
       const itemDate = {
         day: +userItem.date4.slice(8),
         month: +userItem.date4.slice(5, 7),
@@ -163,18 +168,19 @@ export const mapDataByUserItems = (allItems: any, allMembers: any) => {
   return boardByUser;
 };
 
-const getUserIdsOfMissingItems = (users: any) => {
+const getUserIdsOfMissingItems = (users: User[] | null) => {
+  if (!users) return [];
   const ids = [];
   for (let i = 0; i < users.length; i++) {
-    const user = users[i];
+    const user: User = users[i];
     for (let j = 0; j < user.userItems.length; j++) {
-      const item = user.userItems[j];
+      const item: any = user.userItems[j];
       if (!item) {
         ids.push(user._id);
         continue;
       }
       for (let k = 0; k < item.length; k++) {
-        const slot = item[k];
+        const slot: UserItem = item[k];
         if (!slot.actual_hours || slot.actual_hours === "0") {
           ids.push(user._id);
         }

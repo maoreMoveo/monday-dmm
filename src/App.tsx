@@ -7,21 +7,20 @@ import "monday-ui-react-core/dist/main.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getItemsAndMembers } from "./store/board/actions/board.action";
 import Hourly from "./pages/hourly/Hourly";
-import _ from "lodash";
+import { AppDispatch, RootStore } from "./store/store";
 
 const monday = mondaySdk();
 
 const App = () => {
   const [context, setContext] = useState();
-  const board = useSelector((state) => state.board);
-  const dispatch = useDispatch();
+  const board = useSelector((state:RootStore) => state.board);
+  const dispatch = useDispatch<AppDispatch>();
   console.log("context:  ");
   console.log(context);
 
   useEffect(() => {
     monday.execute("valueCreatedForUser");
-    monday.listen("context", (res) => {
-      console.log("listen");
+    monday.listen("context", (res:any) => {
       setContext(res.data);
     });
   }, []);
@@ -29,16 +28,15 @@ const App = () => {
   useEffect(() => {
     if (context) {
       const { boardId } = context;
-      if (!board.boardMembers && !board.items) {
+      if (!board.boardMembers && !board.userItems) {
         (async () => {
-          await dispatch(getItemsAndMembers(boardId));
+           dispatch(getItemsAndMembers(boardId));
         })();
       }
     }
   }, [dispatch, context, board]);
 
-  console.log(board.items);
-  console.log(board.boardMembers);
+
   return (
     <div className="App">
       <Hourly />

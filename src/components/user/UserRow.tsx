@@ -4,9 +4,15 @@ import UserDetails from "./user-details/UserDetails";
 import "./_user-row.scss";
 import _ from "lodash";
 import { boardService } from "../../services/board.service";
-
-const UserRow = ({ member, startingDayIndex, endingDayIndex, daysInMonth }) => {
-  const month = new Date().getMonth() + 1;
+import { User } from "../../types/user";
+interface IPropsUserRow{
+  member:User;
+  startingDayIndex:number;
+  endingDayIndex:number;
+  daysInMonth:number;
+}
+const UserRow = ({ member, startingDayIndex, endingDayIndex, daysInMonth }:IPropsUserRow) => {
+  const month:number = new Date().getMonth() + 1;
   const year = new Date().getFullYear();
   const daysInMonthArray = boardService.workingDatesWithWeekend(
     daysInMonth,
@@ -28,7 +34,7 @@ const UserRow = ({ member, startingDayIndex, endingDayIndex, daysInMonth }) => {
           }
           if (
             member.userItems[idx] === null ||
-            _.find(member.userItems[idx], (slot) => slot.actual_hours === "")
+            _.find(member.userItems[idx], (slot:any) => slot.actual_hours === "")
           ) {
             return <UserCard isValid={false} />;
           }

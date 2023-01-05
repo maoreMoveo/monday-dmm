@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getItemsAndMembers } from "./actions/board.action";
+import { Member } from "../../types/member";
+import { User } from "../../types/user";
+import { Board } from "../../types/board";
 
 interface initialStateI {
-  board: object | null;
-  userItems: [] | null;
-  boardMembers: [] | null;
+  board: Board | null;
+  userItems: User[] | null;
+  boardMembers: Member[] | null;
 }
 
 const initialState: initialStateI = {

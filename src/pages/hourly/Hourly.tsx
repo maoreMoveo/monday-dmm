@@ -8,17 +8,18 @@ import Header from "../../components/header/Header";
 import BoardDetails from "../../components/board-details/BoardDetails";
 import WeeklyCalendarDisplay from "../../components/weekly-calendar-display/WeeklyCalendarDisplay";
 import UserRow from "../../components/user/UserRow";
+import { RootStore } from "../../store/store";
 
 const Hourly = () => {
-  const board = useSelector((state) => state.board);
-  const [startingDayIndex, setStartingDayIndex] = useState(0);
-  const [endingDayIndex, setEndingDayIndex] = useState(7);
-  const month = new Date().getMonth();
-  const year = new Date().getFullYear();
-  const getMaxDaysInMonth = (month, year) => {
+  const board = useSelector((state:RootStore) => state.board);
+  const [startingDayIndex, setStartingDayIndex] = useState<number>(0);
+  const [endingDayIndex, setEndingDayIndex] = useState<number>(7);
+  const month:number = new Date().getMonth();
+  const year:number = new Date().getFullYear();
+  const getMaxDaysInMonth = (month:number, year:number) => {
     return new Date(year, month, 0).getDate();
   };
-  const daysInMonth = getMaxDaysInMonth(month, year);
+  const daysInMonth:number = getMaxDaysInMonth(month, year);
   const handleNextWeek = () => {
     if (endingDayIndex <= 28) {
       setEndingDayIndex((prev) => prev + 7);
@@ -26,7 +27,6 @@ const Hourly = () => {
     }
     if (endingDayIndex === 28) {
       setEndingDayIndex(daysInMonth);
-
       return;
     }
   };
@@ -35,7 +35,6 @@ const Hourly = () => {
     if (endingDayIndex === daysInMonth) {
       setEndingDayIndex(28);
       setStartingDayIndex((prev) => prev - 7);
-
       return;
     }
     setStartingDayIndex((prev) => prev - 7);

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+//@ts-ignore
 import { Button } from "monday-ui-react-core";
 import "./_header.scss";
 import ReminderModal from "./reminder-modal/ReminderModal";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleToggleModal = () => {
     setIsOpen((prev) => !prev);

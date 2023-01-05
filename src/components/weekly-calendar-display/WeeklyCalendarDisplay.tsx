@@ -3,6 +3,15 @@ import CalendarHeader from "./CalendarHeader";
 import DayCard from "./DayCard";
 import "./_weekly-calendar-display.scss";
 
+interface IPropsWeekly{
+  month:number
+  year:number
+  startingDayIndex:number
+  endingDayIndex:number
+  handleNextWeek:()=>void
+  handlePrevWeek:()=>void
+  daysInMonth:number
+}
 const WeeklyCalendarDisplay = ({
   month,
   year,
@@ -11,7 +20,7 @@ const WeeklyCalendarDisplay = ({
   handleNextWeek,
   handlePrevWeek,
   daysInMonth,
-}) => {
+}:IPropsWeekly) => {
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
     "January",
@@ -47,8 +56,6 @@ const WeeklyCalendarDisplay = ({
           daysInMonthArray={daysInMonthArray}
           startingDayIndex={startingDayIndex}
           endingDayIndex={endingDayIndex}
-          month={month}
-          year={year}
         />
       </div>
     </div>

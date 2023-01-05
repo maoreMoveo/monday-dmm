@@ -1,5 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { boardService } from "../../../services/board.service";
+import { Board } from "../../../types/board";
+import { Member } from "../../../types/member";
+import { User } from "../../../types/user";
 export const getBoardData = async (id: string) => {
   const res: any = await boardService.fetchBoard(id);
   const allItems = res.boards[0].items.map((item: any) => {
@@ -18,21 +21,19 @@ export const getBoardData = async (id: string) => {
 };
 export const getAllMemberFromBoard = async (id: string) => {
   const res: any = await boardService.fetchMembersOfBoard(id);
-  console.log("members");
-  console.log(res);
   return res.boards[0].subscribers;
 };
 
 export const getItemsAndMembers = createAsyncThunk(
   "board/getAllItemsAndMembers",
   async (id: string) => {
-    const board = await getBoardData(id);
+    const board:Board = await getBoardData(id);
     console.log("all items", board.allItems);
 
-    const allMembers = await getAllMemberFromBoard(id);
+    const allMembers:Member[] = await getAllMemberFromBoard(id);
     console.log("all members", allMembers);
 
-    const itemsByUser = boardService.mapDataByUserItems(
+    const itemsByUser:User[] = boardService.mapDataByUserItems(
       board.allItems,
       allMembers
     );

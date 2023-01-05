@@ -1,13 +1,18 @@
 import React from "react";
 import "./_user-details.scss";
+//@ts-ignore
 import { Box } from "monday-ui-react-core";
 import { useSelector } from "react-redux";
 import { boardService } from "../../../services/board.service";
+import { User } from "../../../types/user";
+import { RootStore } from "../../../store/store";
+interface IPropsUserDetails{
+  member:User
+}
+const UserDetails = ({ member }:IPropsUserDetails) => {
+  const users = useSelector((state:RootStore) => state.board.userItems);
 
-const UserDetails = ({ member }) => {
-  const users = useSelector((state) => state.board.userItems);
-
-  const getFirstNameFirstLetterAndLastNameFirstLatter = (name) => {
+  const getFirstNameFirstLetterAndLastNameFirstLatter = (name:string) => {
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
     return `${firstName[0]}${lastName[0]}`;

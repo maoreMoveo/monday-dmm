@@ -1,7 +1,18 @@
 import React from "react";
+//@ts-ignore
 import { default as rightIcon } from "../../assets/images/right.png";
+//@ts-ignore
 import { default as leftIcon } from "../../assets/images/left.png";
 import "./_calendar-header.scss";
+interface IPropsCalendar{
+  handlePrevWeek:()=>void
+  handleNextWeek:()=>void
+  months:string[]
+  month:number
+  year:number
+  start:number
+  end:number
+}
 const CalendarHeader = ({
   handlePrevWeek,
   handleNextWeek,
@@ -10,7 +21,7 @@ const CalendarHeader = ({
   year,
   start,
   end,
-}) => {
+}:IPropsCalendar) => {
   return (
     <div className="calendar-header">
       <img

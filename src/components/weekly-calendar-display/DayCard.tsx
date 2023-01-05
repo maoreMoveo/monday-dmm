@@ -1,13 +1,19 @@
 import React from "react";
+//@ts-ignore
 import { Box } from "monday-ui-react-core";
 import "./_day-card.scss";
-
+interface IPropsDayCard{
+  days:string[]
+  startingDayIndex:number
+  endingDayIndex:number
+  daysInMonthArray:number[]
+}
 const DayCard = ({
   days,
   startingDayIndex,
   endingDayIndex,
   daysInMonthArray,
-}) => {
+}:IPropsDayCard) => {
   const today = new Date().getDate();
   return (
     <Box className="day-cards-container">
