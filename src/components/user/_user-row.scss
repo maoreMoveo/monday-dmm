@@ -10,6 +10,21 @@
     &:last-child {
       border-right: 1px solid #c5c7d0;
     }
+    &:nth-child(8) {
+      border-right: none;
+    }
+  }
+}
+
+.row:last-child {
+  .user-details {
+    border-bottom: none;
+    border-left: none;
+  }
+  .card {
+    &:nth-child(8) {
+      border-bottom: none;
+    }
   }
 }
 

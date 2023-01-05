@@ -75,6 +75,7 @@ const ReminderModal = ({ handleToggleModal }) => {
     <div className="reminder-modal">
       <div className="close-modal" onClick={handleToggleModal}>
         <Icon
+          className="close-icon"
           iconType={Icon.type.SVG}
           icon={CloseSmall}
           iconLabel="x"
