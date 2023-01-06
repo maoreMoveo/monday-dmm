@@ -1,20 +1,22 @@
 import React from "react";
 import { useSelector } from "react-redux";
 //@ts-ignore
-import { Box,Loader } from "monday-ui-react-core";
+import { Box, Loader } from "monday-ui-react-core";
 import "./_board-details.scss";
 import { boardService } from "../../services/board.service";
 import { RootStore } from "../../store/store";
 const BoardDetails = () => {
-  const board = useSelector((state:RootStore) => state.board);
-  const boardMembers = useSelector((state:RootStore) => state.board.boardMembers);
-  const users = useSelector((state:RootStore) => state.board.userItems);
+  const board = useSelector((state: RootStore) => state.board);
+  const boardMembers = useSelector(
+    (state: RootStore) => state.board.boardMembers
+  );
+  const users = useSelector((state: RootStore) => state.board.userItems);
   console.log(users, "users");
 
-  const numberOfInvalidMembers:number =
+  const numberOfInvalidMembers: number =
     boardService.getUserIdsOfMissingItems(users).length;
-    if(!board.board || !boardMembers)
-    return  (
+  if (!board.board || !boardMembers)
+    return (
       <div className="loader">
         <Loader size={40} />
       </div>

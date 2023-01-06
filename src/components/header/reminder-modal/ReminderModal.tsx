@@ -66,6 +66,7 @@ const ReminderModal = ({ handleToggleModal }: IPropsReminder) => {
     const arr: User[] = [];
     board.userItems.map((user: User) => {
       user.userItems.map((item: any) => {
+        // if(item==='weekend') return arr.push();
         if (!item) arr.push(user);
         else
           item.map((it: UserItem) => {
@@ -74,6 +75,7 @@ const ReminderModal = ({ handleToggleModal }: IPropsReminder) => {
       });
     });
     const temparr = [...new Set(arr)];
+    if(temparr.length===0) return
     const res = await Promise.all(
       temparr.map(async (userItem: User) => {
         const text = `Hi, ${userItem.person}

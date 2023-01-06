@@ -5,14 +5,19 @@ import "./_user-row.scss";
 import _ from "lodash";
 import { boardService } from "../../services/board.service";
 import { User } from "../../types/user";
-interface IPropsUserRow{
-  member:User;
-  startingDayIndex:number;
-  endingDayIndex:number;
-  daysInMonth:number;
+interface IPropsUserRow {
+  member: any;
+  startingDayIndex: number;
+  endingDayIndex: number;
+  daysInMonth: number;
 }
-const UserRow = ({ member, startingDayIndex, endingDayIndex, daysInMonth }:IPropsUserRow) => {
-  const month:number = new Date().getMonth() + 1;
+const UserRow = ({
+  member,
+  startingDayIndex,
+  endingDayIndex,
+  daysInMonth,
+}: IPropsUserRow) => {
+  const month: number = new Date().getMonth() + 1;
   const year = new Date().getFullYear();
   const daysInMonthArray = boardService.workingDatesWithWeekend(
     daysInMonth,
@@ -26,21 +31,35 @@ const UserRow = ({ member, startingDayIndex, endingDayIndex, daysInMonth }:IProp
       {daysInMonthArray
         .slice(startingDayIndex, endingDayIndex)
         .map((day, idx) => {
-          if (idx === 5 || idx === 6) {
-            return <UserCard emptyWeekDay={false} />;
-          }
+          const isNotValid =
+            member.userItems[idx] === null ||
+            _.find(
+              member.userItems[idx],
+              (slot: any) => slot.actual_hours === ""
+            );
+          const valid =
+            member.userItems[idx] && member.userItems[idx] !== "weekend";
           if (startingDayIndex > member.userItems.length) {
+            if (idx === 5 || idx === 6) {
+              return <UserCard emptyWeekDay={false} />;
+            }
             return <UserCard emptyWeekDay={true} />;
           }
-          if (
-            member.userItems[idx] === null ||
-            _.find(member.userItems[idx], (slot:any) => slot.actual_hours === "")
-          ) {
+          if (idx === 5 || idx === 6) {
+            if (isNotValid) {
+              return <UserCard isValid={false} emptyWeekDay={false} />;
+            }
+            if (valid) {
+              return <UserCard isValid={true} emptyWeekDay={false} />;
+            }
+            return <UserCard emptyWeekDay={false} />;
+          }
+          if (isNotValid) {
             return <UserCard isValid={false} />;
           }
-
-          if (!member.userItems[idx]) return <UserCard emptyWeekDay={true} />;
-          return <UserCard isValid={true} />;
+          // return <UserCard emptyWeekDay={true} />;
+          
+           return <UserCard isValid={true} />;
         })}
     </div>
   );

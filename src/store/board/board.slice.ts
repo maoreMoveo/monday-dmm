@@ -6,7 +6,7 @@ import { Board } from "../../types/board";
 
 interface initialStateI {
   board: Board | null;
-  userItems: User[] | null;
+  userItems: User[] | null ;
   boardMembers: Member[] | null;
 }
 

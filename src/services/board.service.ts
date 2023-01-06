@@ -27,7 +27,7 @@ const fetchBoard = async (id: string) => {
     const res = await monday.api(query);
     return res.data;
   } catch (error) {
-    return console.log(error)
+    return console.log(error);
   }
 };
 
@@ -70,16 +70,17 @@ const workingDatesWithWeekend = (
   for (let i = 0; i < arr.length; i++) {
     const weekDay = new Date(`${month}, ${i}, ${year}`).getDay();
 
-    if (weekDay === 5 || weekDay === 6) {
+    if (weekDay === 4 || weekDay === 5) {
       arr[i] = "weekend";
     }
   }
+
   return arr;
 };
 
 export const mapDataByUserItems = (allItems: any, allMembers: any) => {
   const date: Date = new Date();
-  const maxDayInMonthToCheck: number = date.getDate();
+  const maxDayInMonthToCheck = date.getDate();
   const year: number = date.getFullYear();
   const month: number = date.getMonth() + 1;
   const sortItem = _.sortBy(allItems, ["person", "date4"]);
@@ -104,7 +105,10 @@ export const mapDataByUserItems = (allItems: any, allMembers: any) => {
         itemDate.month === month &&
         itemDate.year === year
       ) {
-        if (userItemTemp[+itemDate.day - 1]) {
+        if (
+          userItemTemp[+itemDate.day - 1] &&
+          userItemTemp[+itemDate.day - 1] !== "weekend"
+        ) {
           userItemTemp[+itemDate.day - 1] = [
             ...userItemTemp[+itemDate.day - 1],
             userItem,
@@ -125,24 +129,37 @@ export const mapDataByUserItems = (allItems: any, allMembers: any) => {
 
 const getUserIdsOfMissingItems = (users: User[] | null) => {
   if (!users) return [];
-  const ids = [];
-  for (let i = 0; i < users.length; i++) {
-    const user: User = users[i];
-    for (let j = 0; j < user.userItems.length; j++) {
-      const item: any = user.userItems[j];
-      if (!item) {
-        ids.push(user._id);
-        continue;
-      }
-      for (let k = 0; k < item.length; k++) {
-        const slot: UserItem = item[k];
-        if (!slot.actual_hours || slot.actual_hours === "0") {
-          ids.push(user._id);
-        }
-      }
-    }
-  }
-  return [...new Set(ids)];
+  const arr: number[] = [];
+  users.map((user: User) => {
+    user.userItems.map((item: any) => {
+      if (!item) arr.push(user._id);
+      else if (item && item !== "weekend") {
+        item.map((it: UserItem) => {
+          if (it.actual_hours === "") arr.push(user._id);
+        });
+      } else arr.push();
+    });
+  });
+  return [...new Set(arr)];
+  // const ids = [];
+  // for (let i = 0; i < users.length; i++) {
+  //   const user: User = users[i];
+  //   for (let j = 0; j < user.userItems.length; j++) {
+  //     const item: any = user.userItems[j];
+  //     if(item==='weekend')return []
+  //     if (!item) {
+  //       ids.push(user._id);
+  //       continue;
+  //     }
+  //     for (let k = 0; k < item.length; k++) {
+  //       const slot: UserItem = item[k];
+  //       if (!slot.actual_hours || slot.actual_hours === "0") {
+  //         ids.push(user._id);
+  //       }
+  //     }
+  //   }
+  // }
+  // return [...new Set(ids)];
 };
 
 export const boardService = {
