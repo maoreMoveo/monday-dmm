@@ -9,12 +9,11 @@
   flex-direction: column;
   margin-top: 20px;
   border-radius: 1rem;
-  min-height: 650px;
+  height: 650px;
+  overflow-y: scroll;
 }
 
 .hourly-calendar {
-  //   display: flex;
-  //   padding: 0 20px;
   display: flex;
   flex-direction: column;
   width: 100%;

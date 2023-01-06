@@ -30,17 +30,17 @@ const ReminderModal = ({ handleToggleModal }: IPropsReminder) => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-    try{
-      if (selectSendTo === "incomplete") {
-        await sendMessegeToUserWithIncompleteItems();
-      } else {
-        await sendMessegeToAllUserBoard();
-      }
-      setFinishedSending(true);
-    }catch(err){
-      console.log(err);
-    }
+    // setLoading(true);
+    // try{
+    //   if (selectSendTo === "incomplete") {
+    //     await sendMessegeToUserWithIncompleteItems();
+    //   } else {
+    //     await sendMessegeToAllUserBoard();
+    //   }
+    //   setFinishedSending(true);
+    // }catch(err){
+    //   console.log(err);
+    // }
   };
 
   const sendMessegeToAllUserBoard = async () => {

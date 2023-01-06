@@ -7,14 +7,33 @@ import { UserItem } from "../types/userItem";
 const monday = mondaySdk();
 
 const fetchBoard = async (id: string) => {
-  const query = `query {
+  const settings = await monday.get("settings");
+
+  console.log("setttttings");
+  console.log(settings);
+
+  const arrSettings = [
+    Object.keys(settings.data.actualHours)[0],
+    Object.keys(settings.data.date)[0],
+    Object.keys(settings.data.person)[0],
+    "status",
+  ];
+  const variables = {
+    date4:  Object.keys(settings.data.date)[0],
+    actual_hours:Object.keys(settings.data.actualHours)[0],
+    staus: "status",
+    person: Object.keys(settings.data.person)[0],
+  };
+  console.log("setttttings array");
+  console.log(variables);
+  const query = `query  {
     boards(ids:${id}) {
       id
       name
       items {
         id
         name
-        column_values (ids: [date4, project_name,actual_hours,status,person,team_member7]) {
+        column_values(ids: [${arrSettings}]) {
           id
            text
            # value
@@ -24,7 +43,9 @@ const fetchBoard = async (id: string) => {
     }
     }`;
   try {
-    const res = await monday.api(query);
+    
+    const res = await monday.api(query,{variables});
+    console.log(res);
     return res.data;
   } catch (error) {
     return console.log(error);

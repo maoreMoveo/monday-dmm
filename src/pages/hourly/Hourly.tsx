@@ -45,7 +45,7 @@ const Hourly = () => {
       const findUser = _.find(board.userItems, (user: User) => {
         return _.find(
           user.userItems,
-          (item:any) =>
+          (item: any) =>
             item !== "weekend" &&
             item &&
             _.find(

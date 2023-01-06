@@ -7,16 +7,22 @@
   flex-direction: column;
   padding-left: 24px;
   gap: 8px;
+
 }
 
 h2 {
+  margin-top: 16px;
   font-weight: 700;
   font-size: 18px;
   line-height: 26px;
   letter-spacing: -0.5px;
   text-transform: capitalize;
   color: #323338;
-  padding-top: 16px;
+  // padding-top: 16px;
+  text-overflow: ellipsis;
+    width: 200px;
+    height: 26px;
+    overflow:hidden;
 }
 
 p {

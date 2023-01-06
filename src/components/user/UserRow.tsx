@@ -4,7 +4,6 @@ import UserDetails from "./user-details/UserDetails";
 import "./_user-row.scss";
 import _ from "lodash";
 import { boardService } from "../../services/board.service";
-import { User } from "../../types/user";
 interface IPropsUserRow {
   member: any;
   startingDayIndex: number;
