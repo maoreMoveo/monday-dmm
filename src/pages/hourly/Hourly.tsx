@@ -12,7 +12,7 @@ import WeeklyCalendarDisplay from "../../components/weekly-calendar-display/Week
 import UserRow from "../../components/user/UserRow";
 import { RootStore } from "../../store/store";
 import { User } from "../../types/user";
-import _, { includes } from "lodash";
+import _ from "lodash";
 import { UserItem } from "../../types/userItem";
 const monday = mondaySdk();
 
@@ -28,8 +28,6 @@ const Hourly = () => {
     if (!users && board.userItems) setUsers([...board.userItems]);
 
     monday.listen("itemIds", (res: any) => {
-      console.log("resss filter");
-      console.log(res.data);
       if (board.userItems && board.board) {
         if (res.data.length === board.board.allItems.length) {
           setUsers([...board.userItems]);
@@ -47,10 +45,13 @@ const Hourly = () => {
       const findUser = _.find(board.userItems, (user: User) => {
         return _.find(
           user.userItems,
-          (item: any) =>
+          (item:any) =>
             item !== "weekend" &&
             item &&
-            _.find(item, (it: any) => it._id === itemtoCheck.toString())
+            _.find(
+              item,
+              (it: UserItem) => it && it._id === itemtoCheck.toString()
+            )
         );
       }) as User;
       if (

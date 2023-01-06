@@ -31,14 +31,15 @@ const UserRow = ({
       {daysInMonthArray
         .slice(startingDayIndex, endingDayIndex)
         .map((day, idx) => {
+          const userItem=member.userItems[idx+startingDayIndex]
           const isNotValid =
-            member.userItems[idx] === null ||
+          userItem === null ||
             _.find(
-              member.userItems[idx],
+              userItem,
               (slot: any) => slot.actual_hours === ""
             );
           const valid =
-            member.userItems[idx] && member.userItems[idx] !== "weekend";
+          userItem && userItem !== "weekend";
           if (startingDayIndex > member.userItems.length) {
             if (idx === 5 || idx === 6) {
               return <UserCard emptyWeekDay={false} />;
@@ -57,8 +58,6 @@ const UserRow = ({
           if (isNotValid) {
             return <UserCard isValid={false} />;
           }
-          // return <UserCard emptyWeekDay={true} />;
-          
            return <UserCard isValid={true} />;
         })}
     </div>
