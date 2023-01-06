@@ -12,7 +12,7 @@ import WeeklyCalendarDisplay from "../../components/weekly-calendar-display/Week
 import UserRow from "../../components/user/UserRow";
 import { RootStore } from "../../store/store";
 import { User } from "../../types/user";
-import _ from "lodash";
+import _, { includes } from "lodash";
 import { UserItem } from "../../types/userItem";
 const monday = mondaySdk();
 
@@ -28,6 +28,8 @@ const Hourly = () => {
     if (!users && board.userItems) setUsers([...board.userItems]);
 
     monday.listen("itemIds", (res: any) => {
+      console.log("resss filter");
+      console.log(res.data);
       if (board.userItems && board.board) {
         if (res.data.length === board.board.allItems.length) {
           setUsers([...board.userItems]);
@@ -40,16 +42,29 @@ const Hourly = () => {
   }, [board.userItems]);
   //filter by person
   const filterbyPerson = (arrPesronItem: any): User[] => {
-    let findUser: any = [];
-    findUser = _.filter(board.userItems, (user: User) => {
-      return _.find(
-        user.userItems,
-        (item: UserItem) =>
-          item &&
-          _.find(item, (it: any) => it._id === arrPesronItem[0].toString())
-      );
+    const findUsers: any = [];
+    arrPesronItem.map((itemtoCheck: number) => {
+      const findUser = _.find(board.userItems, (user: User) => {
+        return _.find(
+          user.userItems,
+          (item: any) =>
+            item !== "weekend" &&
+            item &&
+            _.find(item, (it: any) => it._id === itemtoCheck.toString())
+        );
+      }) as User;
+      if (
+        findUser !== undefined &&
+        !_.find(
+          findUsers,
+          (user: User) => findUser && user._id === findUser._id
+        )
+      ) {
+        findUsers.push(findUser);
+      }
+      return findUsers.push();
     });
-    return findUser;
+    return _.sortBy(findUsers, ["person"]);
   };
   const getMaxDaysInMonth = (month: number, year: number) => {
     return new Date(year, month, 0).getDate();
