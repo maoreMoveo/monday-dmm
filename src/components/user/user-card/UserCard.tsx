@@ -26,9 +26,7 @@ const UserCard = ({ isValid = -1, emptyWeekDay = -1 }: IPropsUserCard) => {
         </div>
       )}
       {!isValid && (
-        <div >
           <div className="card-content invalid"></div>
-        </div>
       )}
       {emptyWeekDay > 0 && <div className={`card-content week-day`}></div>}
       {!emptyWeekDay && (

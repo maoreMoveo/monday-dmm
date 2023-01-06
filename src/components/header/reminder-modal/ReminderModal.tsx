@@ -66,7 +66,7 @@ const ReminderModal = ({ handleToggleModal }: IPropsReminder) => {
     const arr: User[] = [];
     board.userItems.map((user: User) => {
       user.userItems.map((item: any) => {
-        // if(item==='weekend') return arr.push();
+         if(item==='weekend') return arr.push();
         if (!item) arr.push(user);
         else
           item.map((it: UserItem) => {
@@ -89,7 +89,7 @@ const ReminderModal = ({ handleToggleModal }: IPropsReminder) => {
         );
       })
     );
-    if (res) console.log("all messege send");
+   if (res) console.log("all messege send");
   };
   if (!board)
     return (
