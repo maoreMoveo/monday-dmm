@@ -11,16 +11,16 @@ const fetchBoard = async (id: string) => {
 
   console.log("setttttings");
   console.log(settings);
-
-  const arrSettings = [
+  const arrSettings: string[] = [
     Object.keys(settings.data.actualHours)[0],
     Object.keys(settings.data.date)[0],
     Object.keys(settings.data.person)[0],
     "status",
   ];
+  console.log(arrSettings);
   const variables = {
-    date4:  Object.keys(settings.data.date)[0],
-    actual_hours:Object.keys(settings.data.actualHours)[0],
+    date4: Object.keys(settings.data.date)[0],
+    actual_hours: Object.keys(settings.data.actualHours)[0],
     staus: "status",
     person: Object.keys(settings.data.person)[0],
   };
@@ -43,8 +43,7 @@ const fetchBoard = async (id: string) => {
     }
     }`;
   try {
-    
-    const res = await monday.api(query,{variables});
+    const res = await monday.api(query, { variables });
     console.log(res);
     return res.data;
   } catch (error) {

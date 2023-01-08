@@ -57,7 +57,9 @@ const UserRow = ({
           if (isNotValid) {
             return <UserCard isValid={false} />;
           }
+          if(valid)
            return <UserCard isValid={true} />;
+           return <UserCard  emptyWeekDay={true} />
         })}
     </div>
   );
