@@ -9,7 +9,6 @@ const monday = mondaySdk();
 const fetchBoard = async (id: string) => {
   const settings = await monday.get("settings");
 
-  console.log("setttttings");
   console.log(settings);
   const arrSettings: string[] = [
     Object.keys(settings.data.actualHours)[0],
@@ -24,7 +23,6 @@ const fetchBoard = async (id: string) => {
     staus: "status",
     person: Object.keys(settings.data.person)[0],
   };
-  console.log("setttttings array");
   console.log(variables);
   const query = `query  {
     boards(ids:${id}) {
